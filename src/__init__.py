@@ -1,0 +1,1 @@
+# Braucht das Programm um die Ordnerstruktur als Module wahrnehmen kann und man die Datein INDIREKT in verschiedene Ordnerstrukturen importieren kann
