@@ -37,9 +37,11 @@ def apiCall(atlassianusername, apitoken, urlForCall):
 # BeautifulSoup-Methode .get_text() hintuzgefgt wird dann lässt sich nur der Text des gewählten extraktors ausgeben. Sprich
 # result = 'Hello World'.
 # BOTH VARIABLEs MUST BE A STRING!!!!!
-def informationExtractor(item: str, extractor: str):
-    soup = BeautifulSoup(item, 'html.parser')
+def informationExtractor(item, extractor: str, parser: str):
+    if not isinstance(item, str):
+        raise TypeError(f"Die übergebene Variable item muss für die Methode informationExtractor() ein String sein. Möglich mit str(item) beim übergeben in die Methode")
+    soup = BeautifulSoup(item, parser)
     result = soup.find_all(extractor)
+    print(result)
     return result
-
 
