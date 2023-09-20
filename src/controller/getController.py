@@ -27,21 +27,21 @@ def creatAssetFromConfluenceTable(
 
         ###KOMMENTAR### Die Variable projekttable kann man noch Mal diskutieren, wie man eventuell es schafft, dass nicht pauschal die letzte Tabelle einer seite genommen wird.
         # projekttable ist die letzte Tabelle auf der Confluence-Seite, wenn diese über Tabellen verfügt.
-        projekttable = cs.informationExtractor(page_content, 'table')[-1] if cs.informationExtractor(page_content,'table') else None
+        projekttable = cs.informationExtractor(page_content, 'table', 'html.parser')[-1] if len(page_content) >= 1 else None
 
         ###KOMMENTAR### Dieser If abfrage kann man noch Mal diskutieren
         if fulltable:
             # rows ist eine Liste mit allen Zeilen in der Tabelle
-            rows = cs.informationExtractor(str(projekttable), 'tr') if cs.informationExtractor(str(projekttable), 'tr') else None
+            rows = cs.informationExtractor(str(projekttable), 'tr', 'html.parser') if len(projekttable) >= 1 else None
         else:
             # Es wird sich die letzte Row der Tabelle genommen (extra als Liste konvertiert, für die später folgende Funktionalität)
-            rows = [cs.informationExtractor(str(projekttable), 'tr')[-1]] if cs.informationExtractor(str(projekttable), 'tr') else []
+            rows = [cs.informationExtractor(str(projekttable), 'tr', 'html.parser')[-1]] if len(projekttable) >= 1 else []
 
         # Liste mit mehreren Listen die den Tabelleninhalt abbilden (Bei Verständnisproblemen den print ausführen)
         row_content = []
         if rows:
             for row in rows:
-                cells = [cell.get_text() for cell in cs.informationExtractor(str(row), 'td')]
+                cells = [cell.get_text() for cell in cs.informationExtractor(str(row), 'td', 'html.parser')] if len(row) >= 1 else []
                 if cells:
                     row_content.append(cells)
         #print(row_content)
