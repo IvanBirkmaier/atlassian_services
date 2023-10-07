@@ -1,3 +1,10 @@
+# Um alle Packages richtig einbinden zu können
+import sys
+sys.path.append('../../')
+########################################
+from utils.utils import enviroment_variables
+from authentificationService import createAuthHeaders
+
 from fastapi import HTTPException
 import requests
 import json
@@ -43,12 +50,17 @@ def createJiraAssetObject(url, head, objektypID, item, listeobjectAttributesIDs)
     if response.status_code not in [200, 201]:
         raise HTTPException(status_code=response.status_code, detail="Failed to create Jira asset")
 
-def getObjectschemaList():
-    return 0
-
+def getObjectschemaList(url, header):
+    return requests.get(url,header)
 
 if __name__ == "__main__":
-
+    typeClass = "objectschema"
+    atlassianEndpoint = "list"
+    version = "v1"
+    COMPANY_SUBDOMAIN, USER_MAIL, JIRA_API_TOKEN, WORKSPACE_ID = enviroment_variables("assets")
+    url = createCall(WORKSPACE_ID,version,typeClass,atlassianEndpoint)
+    response = getObjectschemaList(url, createAuthHeaders(USER_MAIL, JIRA_API_TOKEN)).json()
+    print("test")
 
 
 
