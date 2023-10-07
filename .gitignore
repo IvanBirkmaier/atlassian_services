@@ -51,7 +51,7 @@ Thumbs.db
 # Enviroment Variables
 .env
 
-#Notizen
-notes
+# Entfernen aller privaten Notes Files
+notes.txt
 
 
