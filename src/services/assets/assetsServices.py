@@ -43,3 +43,23 @@ def createJiraAssetObject(url, head, objektypID, item, listeobjectAttributesIDs)
     if response.status_code not in [200, 201]:
         raise HTTPException(status_code=response.status_code, detail="Failed to create Jira asset")
 
+def getObjectschemaList():
+    return 0
+
+
+if __name__ == "__main__":
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

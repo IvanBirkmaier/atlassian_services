@@ -1,6 +1,8 @@
 # Dokumentation https://docs.herocoders.com/clockwork/use-the-clockwork-api
 import pandas as pd
 import requests
+from utils.utils import enviroment_variables
+
 import dotenv as de
 import os
 
