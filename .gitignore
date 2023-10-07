@@ -48,3 +48,10 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Enviroment Variables
+.env
+
+# Entfernen aller privaten Notes Files
+notes.txt
+
+
