@@ -1,29 +1,14 @@
 # README #
-
-This README would normally document whatever steps are necessary to get your application up and running.
-
-### What is this repository for? ###
-
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
 ### How do I get set up? ###
+* You should set up a lokal .env file for lokally testing the implementation. The .env file needs the following variables.
+  * #### Clockwork ENVs: ####
+    * CLOCKWORK_API_TOKEN = "YOUR_TOKEN"
+    * ATLASSIAN_ACCOUNT_ID ="YOUR_ID" (Cloud also be any other Account id)
+  * #### Jira ENVs: ####
+    * COMPANY_SUBDOMAIN = "COMPANY_SUBDOMAIN"
+    * USER_MAIL = "YOUR_ACCOUNT_EMAIL" (Cloud also be any other Account id)
+    * JIRA_API_TOKEN = "YOUR_API_TOKEN"
+    * WORKSPACE_ID = "YOUR_WORKSACE_ID"
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+### Good to know? ###
+* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)

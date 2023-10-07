@@ -1,7 +1,14 @@
 # Dokumentation https://docs.herocoders.com/clockwork/use-the-clockwork-api
 import pandas as pd
 import requests
-import pandas
+import dotenv as de
+import os
+
+
+de.load_dotenv()  # This will load the environment variables from .env file
+
+CLOCKWORK_API_TOKEN = os.getenv('CLOCKWORK_API_TOKEN')
+ATLASSIAN_ACCOUNT_ID = os.getenv('ATLASSIAN_ACCOUNT_ID')
 
 def authentification(token: str):
     header ={
@@ -30,41 +37,16 @@ def get_worklogs_for_ticket(accountId:str, header, url):
             ticket_worklog.append(res)
     return ticket_worklog
 
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == "__main__":
-    api_token = "3km31746G/4twG2/BZj6KPWA35+t+c1lJ3NCCg3p6VMpo5vK2xyxDdYo8zFJoDUyMMBGRyYHQef6a7eQPThydNCYYnKSHEdI8hPx/Q==--07v6lPkTJNyXMhR/--SewUbFOiyAI/2+8NnjWdCQ=="
-    accountId ="624c31d37a3f9e006ab5ab30" # Ivan Birkmaier
-    accountId ="5e41c799a17f930c9b93efdc" # Thorsten Hahn
-    accountId = "712020:f7804a87-0873-48b0-869b-299f040495c9" #Arash
     starting_at = "2023-10-05"
     ending_at = "2023-10-06"
-
-    # Alle worklogs, aller tickets vom user mit der account_id die bis zum 05.10.2023 geschlossenm wurden
-    # endpunkt = "worklogs?expand=worklogs&ending_at=2023-10-06&account_id=624c31d37a3f9e006ab5ab30"
-
-    # Alle worklogs, aller tickets vom user mit der account_id die am 05.10.2023 angefangen wurden und am 05.10.2023 wieder geschlossenm wurden
-    # endpunkt = "worklogs?expand=worklogs&ending_at=2023-10-05&account_id=624c31d37a3f9e006ab5ab30&starting_at=2023-10-05"
-
-    #endpunkt = "worklogs?expand=worklogs&ending_at=2023-09-28&account_id=624c31d37a3f9e006ab5ab30&starting_at=2023-09-28"
-
-    # endpunkt = "worklogs?expand=worklogs&ending_at=2023-10-05&account_id=624c31d37a3f9e006ab5ab30&starting_at=2023-09-27"
 
     endpunkt = f"worklogs?expand=worklogs&starting_at={starting_at}&ending_at={ending_at}"
 
 
-    header = authentification(api_token)
+    header = authentification(CLOCKWORK_API_TOKEN)
     url = createCall(endpunkt)
-    ticket_worklogs = get_worklogs_for_ticket(accountId,header,url)
+    ticket_worklogs = get_worklogs_for_ticket(ATLASSIAN_ACCOUNT_ID,header,url)
     tickets_worked_on = []
     manually_start = []
     manually_stop = []
@@ -74,6 +56,6 @@ if __name__ == "__main__":
         # manually_start.append(log["properties"][0]["value"]["started_manually"])
         # manually_stop.append(log["properties"][0]["value"]["stopped_manually"])
      #########################################################################################
-   # df = pd.DataFrame(data={"Ticket_Keys":tickets_worked_on, "start_manually": manually_start,  "stoped_manually": manually_stop})
-    # count = df.groupby("Ticket_Keys").value_counts()
+   #df = pd.DataFrame(data={"Ticket_Keys":tickets_worked_on, "start_manually": manually_start,  "stoped_manually": manually_stop})
+   #count = df.groupby("Ticket_Keys").value_counts()
     print("test")
