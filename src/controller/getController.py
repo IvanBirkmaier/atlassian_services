@@ -47,7 +47,7 @@ def creatAssetFromConfluenceTable(
         url = asts.createCall(atlassianworkspaceID, "v1", "object", "create")
 
         # Erstellt einen Head für die Authentifizierung gegen die Jira API
-        head = aut.createAuthHeaders(atlassianusername, apitoken)
+        head = aut.createAuthHeadersBase(atlassianusername, apitoken)
 
         # Durchführung der Assets-API Aufrufe um Objekte in Assets zu Erstellen
         for row in row_content:

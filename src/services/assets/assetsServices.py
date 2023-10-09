@@ -2,8 +2,9 @@
 import sys
 sys.path.append('../../')
 ########################################
-from utils.utils import enviroment_variables
-from authentificationService import createAuthHeaders
+from utils.utils import enviroment_variables, \
+    create_abbreviation
+from authentificationService import createAuthHeadersBase
 
 from fastapi import HTTPException
 import requests
@@ -50,8 +51,32 @@ def createJiraAssetObject(url, head, objektypID, item, listeobjectAttributesIDs)
     if response.status_code not in [200, 201]:
         raise HTTPException(status_code=response.status_code, detail="Failed to create Jira asset")
 
+# DEPRICATED_ Funktion bringt keinen Mehrwert kann man auch gleich den Call einfach machen bleibt für die Übersichtlichkeit
 def getObjectschemaList(url, header):
-    return requests.get(url,header)
+    return requests.get(url, headers=header)
+
+def getNamelistFromObjectschema(response):
+    schemas = []
+    for schema in response["values"]:
+        schemas.append([schema["name"], schema["objectSchemaKey"]])
+    return schemas
+
+def creatObjectSchema(name,schema_names):
+    if name in schema_names:
+        return False
+    else:
+        return name
+
+
+"Tfk Projekte"
+
+
+# Mit dieser
+def checkRequiredValues(value_to_check: str,existing_schemata:list, index: int):
+    itemlist = []
+    for schema in existing_schemata:
+        itemlist.append(schema[index])
+    return creatObjectSchema(value_to_check,itemlist), itemlist
 
 if __name__ == "__main__":
     typeClass = "objectschema"
@@ -59,7 +84,11 @@ if __name__ == "__main__":
     version = "v1"
     COMPANY_SUBDOMAIN, USER_MAIL, JIRA_API_TOKEN, WORKSPACE_ID = enviroment_variables("assets")
     url = createCall(WORKSPACE_ID,version,typeClass,atlassianEndpoint)
-    response = getObjectschemaList(url, createAuthHeaders(USER_MAIL, JIRA_API_TOKEN)).json()
+    response = getObjectschemaList(url, createAuthHeadersBase(USER_MAIL, JIRA_API_TOKEN)).json()
+    schemas = getNamelistFromObjectschema(response)
+    schema_name, itemlist= checkRequiredValues("Name",schemas,0)
+    if schema_name:
+        abbreviation = create_abbreviation(schema_name, itemlist)
     print("test")
 
 
