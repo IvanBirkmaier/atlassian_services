@@ -1,9 +1,8 @@
-from ..services.confluence import conflueneceServices as cs
-from ..services.assets import authentificationService as aut
-from ..services.assets import assetsServices as asts
-from ..utils import utils as utl
+from src.services.confluence import conflueneceServices as cs
+from src.services.assets import authentificationService as aut
+from src.services.assets import assetsServices as asts
+from src.utils import utils as utl
 from fastapi import HTTPException
-
 
 def creatAssetFromConfluenceTable(
         companyURL: str,
@@ -67,6 +66,11 @@ def creatAssetFromConfluenceTable(
         return str(e)
 
 
+
+
+# Dokumentieren
+
+
 def createObjectschemaFromConfluenceTable(
         companyURL: str,
         atlassianusername: str,
@@ -89,9 +93,16 @@ def createObjectschemaFromConfluenceTable(
     # Es wird sich die letzte Row der Tabelle genommen (extra als Liste konvertiert, für die später folgende Funktionalität)
     rows = [cs.informationExtractor(str(projekttable), 'tr', 'html.parser')[-1]] if len(
         projekttable) >= 1 else []
+    row_content = []
+    if rows:
+        for row in rows:
+            cells = [cell.get_text() for cell in cs.informationExtractor(str(row), 'td', 'html.parser')] if len(
+                row) >= 1 else []
+            if cells:
+                row_content.append(cells)
 
-    objectSchema_name = rows[0]
-    description = rows[1]
+    objectSchema_name = row_content[0][0]
+    description = row_content[0][1]
 
     ##################################### Logik ############################################
     url = asts.createCall(atlassianworkspaceID, "v1", "objectschema", "list")
@@ -101,13 +112,14 @@ def createObjectschemaFromConfluenceTable(
     _, abbreviation_list = asts.checkRequiredValues(schemas, 1)
     if schema_name:
         abbreviation = asts.create_abbreviation(schema_name, abbreviation_list)
-        url = asts.createCall(atlassianworkspaceID, "v1", "objectschema", "list")
+        url = asts.createCall(atlassianworkspaceID, "v1", "objectschema", "create")
         response = asts.createObjectschema(asts.createAuthHeadersBase(atlassianusername, apitoken), url, schema_name,
                                            abbreviation,
                                            description)
         if response.status_code not in [200, 201]:
             print(f"Response status code: {response.status_code}. Response reason for status code {response.reason}")
             raise HTTPException(status_code=response.status_code, detail="Failed to create Jira asset")
+        return {"status": "Erfolgreich"}
 
 
 if __name__ == "__main__":

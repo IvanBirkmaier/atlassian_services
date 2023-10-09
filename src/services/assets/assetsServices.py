@@ -1,9 +1,5 @@
-# Um alle Packages richtig einbinden zu können
-import sys
-sys.path.append('../../')
-########################################
-from utils.utils import enviroment_variables, create_abbreviation
-from authentificationService import createAuthHeadersBase
+from src.utils.utils import enviroment_variables, create_abbreviation
+from src.services.assets.authentificationService import createAuthHeadersBase
 
 from fastapi import HTTPException
 import requests
@@ -49,6 +45,27 @@ def createJiraAssetObject(url, head, objektypID, item, listeobjectAttributesIDs)
     response = requests.post(url, data=payload, headers=head)
     if response.status_code not in [200, 201]:
         raise HTTPException(status_code=response.status_code, detail="Failed to create Jira asset")
+
+
+
+
+
+
+
+
+
+# Dokumentieren
+
+
+
+
+
+
+
+
+
+
+
 
 # DEPRICATED_ Funktion bringt keinen Mehrwert kann man auch gleich den Call einfach machen bleibt für die Übersichtlichkeit
 def getObjectschemaList(url, header):
