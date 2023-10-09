@@ -19,6 +19,7 @@ def enviroment_variables(produkt: str):
         return COMPANY_SUBDOMAIN, USER_MAIL, JIRA_API_TOKEN, WORKSPACE_ID
 
 # Diese Method nimmt ein String (Wort) entgegen und gibt ein Kürzel-Zurück
+
 def create_abbreviation(string: str, existing_abbreviations: list):
     splits = string.split('_')  # Split the word at underscores
     abbreviation = ''.join([split[0].upper() for split in splits if split])

@@ -1,4 +1,4 @@
-import src.controller.getController as getCon
+import src.controller.postController as postCon
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -15,4 +15,4 @@ async def create_jira_asset(
         listeobjectAttributesIDs: str,
         fulltable: bool
 ):
-    return getCon.creatAssetFromConfluenceTable(companyURL,atlassianusername,apitoken,confluencePageID, atlassianworkspaceID,objektypID,listeobjectAttributesIDs,fulltable)
+    return postCon.creatAssetFromConfluenceTable(companyURL,atlassianusername,apitoken,confluencePageID, atlassianworkspaceID,objektypID,listeobjectAttributesIDs,fulltable)
