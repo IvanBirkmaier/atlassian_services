@@ -1,3 +1,6 @@
+from src.utils.utils import enviroment_variables, create_abbreviation
+from src.services.assets.authentificationService import createAuthHeadersBase
+
 from fastapi import HTTPException
 import requests
 import json
@@ -42,4 +45,102 @@ def createJiraAssetObject(url, head, objektypID, item, listeobjectAttributesIDs)
     response = requests.post(url, data=payload, headers=head)
     if response.status_code not in [200, 201]:
         raise HTTPException(status_code=response.status_code, detail="Failed to create Jira asset")
+
+
+
+
+
+
+
+
+
+# Dokumentieren
+
+
+
+
+
+
+
+
+
+
+
+
+# DEPRICATED_ Funktion bringt keinen Mehrwert kann man auch gleich den Call einfach machen bleibt für die Übersichtlichkeit
+def getObjectschemaList(url, header):
+    return requests.get(url, headers=header)
+
+def getNamelistFromObjectschema(response):
+    schemas = []
+    for schema in response["values"]:
+        schemas.append([schema["name"], schema["objectSchemaKey"]])
+    return schemas
+
+def creatObjectSchema(name,schema_names):
+    if name in schema_names:
+        return False
+    else:
+        return name
+
+# Mit dieser
+def checkRequiredValues(existing_schemata: list, slicer: int, value_to_check= ""):
+    itemlist = []
+    for schema in existing_schemata:
+        itemlist.append(schema[slicer])
+    if value_to_check != "":
+        return creatObjectSchema(value_to_check,itemlist), itemlist
+    else:
+        return False, itemlist
+
+def createObjectschema(head ,url, name,abbreviation,description):
+    payload = json.dumps({
+        "name":name,
+        "objectSchemaKey": abbreviation,
+        "description": description
+    })
+    return requests.post(url, data=payload, headers=head)
+
+
+
+
+
+if __name__ == "__main__":
+    ########################### Schema Variablen #########################################
+    objectSchema_name = "AA_Test"
+    description = "Testschema angelget durch Api"
+    ################### API-Variablen #####################################
+    typeClass = "objectschema"
+    atlassianEndpoint_list = "list"
+    atlassianEndpoint_create = "create"
+    version = "v1"
+    COMPANY_SUBDOMAIN, USER_MAIL, JIRA_API_TOKEN, WORKSPACE_ID = enviroment_variables("assets")
+    ##################################### Logik ############################################
+    url = createCall(WORKSPACE_ID,version,typeClass,atlassianEndpoint_list)
+    response = getObjectschemaList(url, createAuthHeadersBase(USER_MAIL, JIRA_API_TOKEN)).json()
+    schemas = getNamelistFromObjectschema(response)
+    schema_name, _= checkRequiredValues(schemas,0,objectSchema_name)
+    _, abbreviation_list= checkRequiredValues(schemas,1)
+
+    if schema_name:
+        abbreviation = create_abbreviation(schema_name, abbreviation_list)
+        url = createCall(WORKSPACE_ID, version, typeClass, atlassianEndpoint_create)
+        response = createObjectschema(createAuthHeadersBase(USER_MAIL, JIRA_API_TOKEN) ,url, schema_name,abbreviation,description)
+        if response.status_code not in [200, 201]:
+            print()
+            raise HTTPException(status_code=response.status_code, detail="Failed to create Jira asset")
+    print("test")
+
+
+
+
+
+
+
+
+
+
+
+
+
 

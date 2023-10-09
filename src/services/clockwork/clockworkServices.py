@@ -1,14 +1,13 @@
 # Dokumentation https://docs.herocoders.com/clockwork/use-the-clockwork-api
+
+# Um alle Packages richtig einbinden zu können
+import sys
+sys.path.append('../../')
+########################################
 import pandas as pd
 import requests
-import dotenv as de
-import os
+from utils.utils import enviroment_variables
 
-
-de.load_dotenv()  # This will load the environment variables from .env file
-
-CLOCKWORK_API_TOKEN = os.getenv('CLOCKWORK_API_TOKEN')
-ATLASSIAN_ACCOUNT_ID = os.getenv('ATLASSIAN_ACCOUNT_ID')
 
 def authentification(token: str):
     header ={
@@ -40,9 +39,8 @@ def get_worklogs_for_ticket(accountId:str, header, url):
 if __name__ == "__main__":
     starting_at = "2023-10-05"
     ending_at = "2023-10-06"
-
     endpunkt = f"worklogs?expand=worklogs&starting_at={starting_at}&ending_at={ending_at}"
-
+    CLOCKWORK_API_TOKEN, ATLASSIAN_ACCOUNT_ID = enviroment_variables("clockwork")
 
     header = authentification(CLOCKWORK_API_TOKEN)
     url = createCall(endpunkt)
