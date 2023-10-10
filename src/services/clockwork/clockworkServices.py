@@ -4,9 +4,8 @@
 import sys
 sys.path.append('../../')
 ########################################
-import pandas as pd
 import requests
-from utils.utils import enviroment_variables
+from src.utils.utils import enviroment_variables
 
 
 def authentification(token: str):
