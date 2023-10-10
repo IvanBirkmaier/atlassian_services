@@ -1,0 +1,15 @@
+name: Push to remote branch
+run-name: Test if Piplines work
+on:
+  push:
+    branches-ignore:
+      - main
+      - develop
+jobs:
+  lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: echo "Test Github actions"
