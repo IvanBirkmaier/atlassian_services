@@ -40,7 +40,7 @@ Because the initial abbreviation is already existing in the list of given abbrev
 Otherwise the methode whould return "TE".
 '''
 def create_abbreviation(string: str, existing_abbreviations: list):
-    # Split the word at spaces if existing
+    # Split the string at spaces if spaces existing otherwise split ist just a list of with the string
     splits = string.split()
     # Creates a
     abbreviation = ''.join([split[0].upper() for split in splits if split])
