@@ -12,8 +12,8 @@ de.load_dotenv()
 
 '''
 DESCRIPTION:
-This methode returns the enviroment variables which have to be set in an .env file at the rootlevel of this respository.
-For this script you have to install dotenv-package in your python-enviroment. For getting the right result you have to name your
+This methode returns the environment variables which have to be set in an .env file at the root level of this respository.
+For this script you have to install dotenv-package in your python-environment. For getting the right result you have to name your
 enviroment variables in the your .env file as written in for example in os.getenv('CLOCKWORK_API_TOKEN').
 -------------------------------------------------------------------------------------------
 INPUT:
@@ -48,7 +48,7 @@ DESCRIPTION:
 Creates an abbreviation from a giving string by comparing the created abbreviation to a list of already existing abbreviation. If the abbreviation already exist in the given list
 then the funktion modifies the created abbreviation until it created an uique abbreviation for the given string.
 Example: 
-  string = "TestString" (initial expected abbreviation = "TE"
+  string = "TestString" (initial expected abbreviation = "TE")
   existing_abbreviations = ["AB","TE"]
 Because the initial abbreviation is already existing in the list of given abbreviation exist, the methode returns "TES". 
 Otherwise the methode whould return "TE".
