@@ -4,6 +4,8 @@ from src.services.assets import assetsServices as asts
 from src.utils import utils as utl
 from fastapi import HTTPException
 
+
+
 def creatAssetFromConfluenceTable(
         companyURL: str,
         atlassianusername: str,
@@ -19,31 +21,31 @@ def creatAssetFromConfluenceTable(
         listeobjectAttributesIDs = listeobjectAttributesIDs.split(',')
 
         # Extrahiert den JSON-Inhalt aus der API-Antwort
-        json_data = cs.apiCall(atlassianusername, apitoken,
-                               cs.readConfluencePage(cs.baseUrlConfluenceApi(companyURL), confluencePageID)).json()
+        json_data = cs.get_api_call(atlassianusername, apitoken,
+                               cs.endpoint_get_pagecontent(cs.base_url_confluence_api(companyURL), confluencePageID)).json()
 
         # page_content zieht sich den Inhalt der Confluence Seite heraus, die in JSON-Format übergeben wurde.
         page_content = json_data['body']['storage']['value']
 
         ###KOMMENTAR### Die Variable projekttable kann man noch Mal diskutieren, wie man eventuell es schafft, dass nicht pauschal die letzte Tabelle einer seite genommen wird.
         # projekttable ist die letzte Tabelle auf der Confluence-Seite, wenn diese über Tabellen verfügt.
-        projekttable = cs.informationExtractor(page_content, 'table', 'html.parser')[-1] if len(
+        projekttable = utl.information_extractor(page_content, 'table', 'html.parser')[-1] if len(
             page_content) >= 1 else None
 
         ###KOMMENTAR### Dieser If abfrage kann man noch Mal diskutieren
         if fulltable:
             # rows ist eine Liste mit allen Zeilen in der Tabelle
-            rows = cs.informationExtractor(str(projekttable), 'tr', 'html.parser') if len(projekttable) >= 1 else None
+            rows = utl.information_extractor(str(projekttable), 'tr', 'html.parser') if len(projekttable) >= 1 else None
         else:
             # Es wird sich die letzte Row der Tabelle genommen (extra als Liste konvertiert, für die später folgende Funktionalität)
-            rows = [cs.informationExtractor(str(projekttable), 'tr', 'html.parser')[-1]] if len(
+            rows = [utl.information_extractor(str(projekttable), 'tr', 'html.parser')[-1]] if len(
                 projekttable) >= 1 else []
 
         # Liste mit mehreren Listen die den Tabelleninhalt abbilden (Bei Verständnisproblemen den print ausführen)
         row_content = []
         if rows:
             for row in rows:
-                cells = [cell.get_text() for cell in cs.informationExtractor(str(row), 'td', 'html.parser')] if len(
+                cells = [cell.get_text() for cell in utl.information_extractor(str(row), 'td', 'html.parser')] if len(
                     row) >= 1 else []
                 if cells:
                     row_content.append(cells)
@@ -79,24 +81,25 @@ def createObjectschemaFromConfluenceTable(
         atlassianworkspaceID: str
 ):
     # Extrahiert den JSON-Inhalt aus der API-Antwort
-    json_data = cs.apiCall(atlassianusername, apitoken,
-                           cs.readConfluencePage(cs.baseUrlConfluenceApi(companyURL), confluencePageID)).json()
+    json_data = cs.get_api_call(atlassianusername, apitoken,
+                           cs.endpoint_get_pagecontent(cs.base_url_confluence_api(companyURL), confluencePageID)).json()
+
 
     # page_content zieht sich den Inhalt der Confluence Seite heraus, die in JSON-Format übergeben wurde.
     page_content = json_data['body']['storage']['value']
 
     ###KOMMENTAR### Die Variable projekttable kann man noch Mal diskutieren, wie man eventuell es schafft, dass nicht pauschal die letzte Tabelle einer seite genommen wird.
     # projekttable ist die letzte Tabelle auf der Confluence-Seite, wenn diese über Tabellen verfügt.
-    projekttable = cs.informationExtractor(page_content, 'table', 'html.parser')[-1] if len(
+    projekttable = utl.information_extractor(page_content, 'table', 'html.parser')[-1] if len(
         page_content) >= 1 else None
 
     # Es wird sich die letzte Row der Tabelle genommen (extra als Liste konvertiert, für die später folgende Funktionalität)
-    rows = [cs.informationExtractor(str(projekttable), 'tr', 'html.parser')[-1]] if len(
+    rows = [utl.information_extractor(str(projekttable), 'tr', 'html.parser')[-1]] if len(
         projekttable) >= 1 else []
     row_content = []
     if rows:
         for row in rows:
-            cells = [cell.get_text() for cell in cs.informationExtractor(str(row), 'td', 'html.parser')] if len(
+            cells = [cell.get_text() for cell in utl.information_extractor(str(row), 'td', 'html.parser')] if len(
                 row) >= 1 else []
             if cells:
                 row_content.append(cells)

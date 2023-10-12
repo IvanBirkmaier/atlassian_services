@@ -1,11 +1,13 @@
-import dotenv as de
-
-# This will load the environment variables from .env file
-de.load_dotenv()
+from bs4 import BeautifulSoup
 import os
 import itertools
 import re
 import string as st
+import dotenv as de
+
+# This will load the environment variables from .env file
+de.load_dotenv()
+
 
 
 '''
@@ -18,16 +20,16 @@ Aways make sure that the .env file is set in your .gitignore file so that your p
 remote brunch. This is to make sure that there is no possibilty to spread your personal information trough the internet.
 '''
 def enviroment_variables(produkt: str):
+    if produkt.lower() == "atlassian":
+        COMPANY_SUBDOMAIN = os.getenv('COMPANY_SUBDOMAIN')
+        USER_MAIL = os.getenv('USER_MAIL')
+        ATLASSIAN_API_TOKEN = os.getenv('ATLASSIAN_API_TOKEN')
+        WORKSPACE_ID = os.getenv('WORKSPACE_ID')
+        return COMPANY_SUBDOMAIN, USER_MAIL, ATLASSIAN_API_TOKEN, WORKSPACE_ID
     if produkt.lower() == "clockwork":
         CLOCKWORK_API_TOKEN = os.getenv('CLOCKWORK_API_TOKEN')
         ATLASSIAN_ACCOUNT_ID = os.getenv('ATLASSIAN_ACCOUNT_ID')
         return CLOCKWORK_API_TOKEN, ATLASSIAN_ACCOUNT_ID
-    if produkt.lower() == "assets":
-        COMPANY_SUBDOMAIN = os.getenv('COMPANY_SUBDOMAIN')
-        USER_MAIL = os.getenv('USER_MAIL')
-        JIRA_API_TOKEN = os.getenv('JIRA_API_TOKEN')
-        WORKSPACE_ID = os.getenv('WORKSPACE_ID')
-        return COMPANY_SUBDOMAIN, USER_MAIL, JIRA_API_TOKEN, WORKSPACE_ID
     # For the test in file dict = src.test.utils.utils.
     if produkt.lower() == "test":
         TEST_API_TOKEN = "12345Token"
@@ -79,3 +81,27 @@ def create_abbreviation(string: str, existing_abbreviations: list):
                     return abbreviation
             # Increases the length for the combinations to be generated
             length += 1
+
+
+'''
+This function can extract information from HTML-page/content. It takes the content (f.e. HTML-page, or any other subset of HTML-tags) and extract the given
+content for the given extractor: For example content is an HTML page with two tables on it <table>. If we set extractor = "table" then the returned result 
+will be a list of the two tables from the page. This function needs also an parser. The libeary which is used for extracting the content is Beautiful Soup.
+Beautiful soup provieds a set of parser. 
+content = HTML-Page, or subset
+extractor = HTML-Element which you want to be extracted
+parser = Can be one of: 'html.parser, 'lxml', 'lxml-xml', 'html5lib'
+
+NOTE: With the methode .get_text from BeautifulSoup you can acess the text value of the extracted HTML elements 
+'''
+def information_extractor(content:str, extractor: str, parser: str):
+    soup = BeautifulSoup(content, parser)
+    result = soup.find_all(extractor)
+    return result
+
+# def information_extractor(content, extractor: str, parser: str):
+#     if not isinstance(content, str):
+#         raise TypeError(f"Die übergebene Variable item muss für die Methode informationExtractor() ein String sein. Möglich mit str(item) beim übergeben in die Methode")
+#     soup = BeautifulSoup(content, parser)
+#     result = soup.find_all(extractor)
+#     return result

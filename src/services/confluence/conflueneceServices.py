@@ -1,47 +1,35 @@
 from requests.auth import HTTPBasicAuth
 from fastapi import HTTPException
-from bs4 import BeautifulSoup
 import requests
 
-
-# Funktion zu Erstelllung einer Basis-URL die benötigt wird um Api-Calls mit der Confluence API durchzuführen
-# companyURL: Das Unternehmenskürzel unserer Atlassian-Subdomaine
-def baseUrlConfluenceApi(companyURL):
-    # Basis-URL für Confluence API
-    BASE_URL = f"https://{companyURL}.atlassian.net/wiki/rest/api"
+'''
+This function creates/returns an base Url for any api-call with the confluence api from atlassian.
+company_subdomain = The companie subdomain provided by atlassian.
+'''
+def base_url_confluence_api(company_subdomain):
+    BASE_URL = f"https://{company_subdomain}.atlassian.net/wiki/rest/api"
     return BASE_URL
 
-# Baut den Endpunkt, der dafür benötigt wird, um eine Confluence-Seite komplett auszulesen.
-# baseURl: Basis URl aus dem authentification.py Service Script.
-# confluencePageID: Id der Confluence Seite die ausgelesen werden soll.
-def readConfluencePage(baseUrl, confluencePageID):
-    # Endpunkt für den Confluence API-Aufruf (Confluence Seite auslesen)
-    url = f"{baseUrl}/content/{confluencePageID}?expand=body.storage"
+
+'''
+This function creates/returns the api call with the endpoint for getting the contend of an confluence page.
+base_url = Base url which is needed for any apicall with the confluence api.
+confluence_page_id = Page id from confluence for reading a page.
+'''
+def endpoint_get_pagecontent(base_url, confluence_page_id):
+    url = f"{base_url}/content/{confluence_page_id}?expand=body.storage"
     return url
 
-# apiCall ist eine Methode die einen apiCall an die Confluence-Api durchführt. Um diesen Call durchführen zu können benötigt die
-# methode die drei Variablen, atlassianusername (E-Mail eines Atlassian Users) den dazu gehörigen API-Token und eine
-# Url für den API-Call wie z.b. in der Methode readpage erstellt.
-def apiCall(atlassianusername, apitoken, urlForCall):
-    # API-Aufruf an Confluence
-    response = requests.get(urlForCall, auth=HTTPBasicAuth(atlassianusername, apitoken))
-    # Überprüfung des API-Statuscodes (Wenn erfolgreich, dann Status 200 und Script geht weiter. Wenn erfogreich dann springt das Script an der stelle raus)
+
+'''
+This function runs an request.get api call for a given url for the call. If the HTTP status code of the response is 200
+then it returns the response of the call. By any other  HTTP status code (f.e. 404, 405) it raises an HTTPException.
+USER_MAIL: Mailadresse of atlassian user
+ATLASSIAN_API_TOKEN: Self generated api token. (NOTE its always the token of your account and you need to have the right acces rights)
+call_url: The url for the api call.
+'''
+def get_api_call(USER_MAIL, ATLASSIAN_API_TOKEN, call_url):
+    response = requests.get(call_url, auth=HTTPBasicAuth(USER_MAIL, ATLASSIAN_API_TOKEN))
     if response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail="Failed to get page content")
-    # Extrahiert den JSON-Inhalt aus der API-Antwort
     return response
-
-# Diese Methode holt sich die Informationen, eines Items, dass über die Variable item in die Methode eingegeben wird.
-# Sprich wenn es sich bei dem Item um eine Liste handelt [<h1>Hello World ist</h1>, <p>Test</p>] und der wird auf extractor = 'h1',
-# dann ist die Variable result die zurückgegeben wird [<h1>Hello World ist</h1>]. TIPP: wenn nach dem Methodenaufruf die
-# BeautifulSoup-Methode .get_text() hintuzgefgt wird dann lässt sich nur der Text des gewählten extraktors ausgeben. Sprich
-# result = 'Hello World'.
-# BOTH VARIABLEs MUST BE A STRING!!!!!
-def informationExtractor(item, extractor: str, parser: str):
-    if not isinstance(item, str):
-        raise TypeError(f"Die übergebene Variable item muss für die Methode informationExtractor() ein String sein. Möglich mit str(item) beim übergeben in die Methode")
-    soup = BeautifulSoup(item, parser)
-    result = soup.find_all(extractor)
-    print(result)
-    return result
-

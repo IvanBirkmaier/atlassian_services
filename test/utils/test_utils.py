@@ -37,7 +37,13 @@ def test_enviroment_variables():
     EXPECTED_OUTPUT_TEST_API_TOKEN = "12345Token"
     EXPECTED_OUTPUT_TEST_USER_ID = "max.mustermann@test.com"
     TEST_API_TOKEN, TEST_USER_ID = utl.enviroment_variables("Test")
-    if EXPECTED_OUTPUT_TEST_API_TOKEN == TEST_API_TOKEN and EXPECTED_OUTPUT_TEST_USER_ID == TEST_USER_ID:
-        assert True == True
-    else:
-        raise AssertionError(f"The received output from utl.enviroment_variables() isnot the same as expected")
+    assert EXPECTED_OUTPUT_TEST_API_TOKEN == TEST_API_TOKEN and EXPECTED_OUTPUT_TEST_USER_ID == TEST_USER_ID
+
+# def test_enviroment_variables():
+#     EXPECTED_OUTPUT_TEST_API_TOKEN = "12345Token"
+#     EXPECTED_OUTPUT_TEST_USER_ID = "max.mustermann@test.com"
+#     TEST_API_TOKEN, TEST_USER_ID = utl.enviroment_variables("Test")
+#     if EXPECTED_OUTPUT_TEST_API_TOKEN == TEST_API_TOKEN and EXPECTED_OUTPUT_TEST_USER_ID == TEST_USER_ID:
+#         assert True == True
+#     else:
+#         raise AssertionError(f"The received output from utl.enviroment_variables() isnot the same as expected")

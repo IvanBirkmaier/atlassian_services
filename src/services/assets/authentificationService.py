@@ -1,5 +1,9 @@
 import base64
 
+# man kann diese methode warscheinlich durch auth=HTTPBasicAuth(atlassianusername, apitoken) im request ersetzen
+
+
+
 # Erstellt einen Auth-Header der benötigt wird um Rest-Calls an die Assets-API zu senden
 # Input hierfür ist der atlassianusername: z.b ivan.birkmaier@neolern.de und ein API-Token der für den
 # atlassianuser erstellt werden muss (unter folgender Adresse: https://id.atlassian.com/manage-profile/security/api-tokens)
@@ -13,4 +17,3 @@ def createAuthHeadersBase(atlassianusername, apitoken):
         "Authorization": f"Basic {baseencoded_auth}"
     }
     return headers
-
