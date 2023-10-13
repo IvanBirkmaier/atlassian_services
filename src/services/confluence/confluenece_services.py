@@ -13,6 +13,9 @@ RETURN:
 BASE_URL = The base url for api calls against the confluence api without any endpoint
 '''
 def base_url_confluence_api(company_subdomain):
+    # makes sure that the company_subdomain is allways a string
+    if not isinstance(company_subdomain, str):
+        company_subdomain = str(company_subdomain)
     BASE_URL = f"https://{company_subdomain}.atlassian.net/wiki/rest/api"
     return BASE_URL
 
@@ -29,6 +32,9 @@ RETURN:
 url = The url for the api call with the right endpoint.
 '''
 def endpoint_get_pagecontent(base_url:str, confluence_page_id):
+    # makes sure that the confluence_page_id is allways a string
+    if not isinstance(confluence_page_id, str):
+        confluence_page_id = str(confluence_page_id)
     url = f"{base_url}/content/{confluence_page_id}?expand=body.storage"
     return url
 
