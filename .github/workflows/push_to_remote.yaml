@@ -1,5 +1,5 @@
 name: Push to remote branch
-run-name: Test if Pipelines work
+run-name: Unit tests
 on:
   push:
     branches-ignore:

@@ -1,5 +1,5 @@
 from src.utils.utils import enviroment_variables, create_abbreviation
-from src.services.assets.authentificationService import createAuthHeadersBase
+from src.services.assets.authentification_service import createAuthHeadersBase
 
 from fastapi import HTTPException
 import requests

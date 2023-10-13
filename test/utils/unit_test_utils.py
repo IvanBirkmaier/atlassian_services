@@ -13,10 +13,6 @@ TEST_RUNS_test_information_extractor = [
      [["p", "Third Test a"], ["p", "Third Test b"], ["p", "Third Test c"]], "html.parser"],
     ["<table><tbody><tr>Unit Test</tr></tbody></table>", "tbody", [["tbody", "<tr>Unit Test</tr>"]], "html.parser"]]
 
-#
-# TEST_RUNS_test_information_extractor = [
-#     ["<table><tbody><tr>Unit Test</tr></tbody></table>", "tbody", [["tbody", "<tr>Unit Test</tr>"]], "html.parser"]]
-
 '''
 DESCRIPTION:
 This is an recrusiv test-methode where multiple test runs, which are defined in the Script_variables. It tests the methode of. 

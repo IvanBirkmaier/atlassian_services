@@ -1,6 +1,6 @@
-from src.services.confluence import conflueneceServices as cs
-from src.services.assets import authentificationService as aut
-from src.services.assets import assetsServices as asts
+from src.services.confluence import confluenece_services as cs
+from src.services.assets import authentification_service as aut
+from src.services.assets import assets_services as asts
 from src.utils import utils as utl
 from fastapi import HTTPException
 
